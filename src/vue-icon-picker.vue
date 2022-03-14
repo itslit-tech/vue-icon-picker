@@ -1,12 +1,14 @@
 <template>
   <div class="rbt-icon-picker">
-        <span class="icon-preview" v-if="iconPreview && selectedIcon.name">
-            <i :class="`${selectedIcon.type} fa-${selectedIcon.name}`"></i>
-        </span>
-    <button @click="popUpActive = true"
-            :style="customStyle"
-            class="picker-btn"
-            type="button">
+    <span class="icon-preview" v-if="iconPreview && selectedIcon.name">
+      <i :class="`${selectedIcon.type} fa-${selectedIcon.name}`"></i>
+    </span>
+    <button
+      @click="popUpActive = true"
+      :style="customStyle"
+      class="picker-btn"
+      type="button"
+    >
       {{ button }}
     </button>
 
@@ -20,8 +22,13 @@
         <div class="rip-popup-content">
           <div class="rip-search">
             <div class="rip-input">
-              <label for="ripSearch" style="display: none;">Search Icons</label>
-              <input id="ripSearch" placeholder="Search Icons" v-model="searchText" @input="searchTextChanged">
+              <label for="ripSearch" style="display: none">Search Icons</label>
+              <input
+                id="ripSearch"
+                placeholder="Search Icons"
+                v-model="searchText"
+                @input="searchTextChanged"
+              />
             </div>
           </div>
 
@@ -31,16 +38,18 @@
             </div>
 
             <div class="rip-icons" v-show="!loading">
-
               <h4 class="icon-title">Regular Icons</h4>
-              <p style="text-align: center;" v-if="regularIcons.length <= 0">
+              <p style="text-align: center" v-if="regularIcons.length <= 0">
                 <i class="fas fa-eye-slash"></i>
                 Sorry, No icons found!
-
               </p>
 
               <ul class="rip-row" v-if="regularIcons.length > 0">
-                <li v-for="(icon, index) in regularIcons" :key="index" class="rip-col">
+                <li
+                  v-for="(icon, index) in regularIcons"
+                  :key="index"
+                  class="rip-col"
+                >
                   <div class="icon-content text-center">
                     <div class="icon-el" @click="selectIcon(icon, 'far')">
                       <i :class="`far fa-${icon}`"></i>
@@ -53,14 +62,17 @@
               </ul>
 
               <h4 class="icon-title">Brand Icons</h4>
-              <p style="text-align: center;" v-if="brandIcons.length <= 0">
+              <p style="text-align: center" v-if="brandIcons.length <= 0">
                 <i class="fas fa-eye-slash"></i>
                 Sorry, No Brand icons found!
-
               </p>
 
               <ul class="rip-row" v-if="brandIcons.length > 0">
-                <li v-for="(icon, index) in brandIcons" :key="index" class="rip-col">
+                <li
+                  v-for="(icon, index) in brandIcons"
+                  :key="index"
+                  class="rip-col"
+                >
                   <div class="icon-content text-center">
                     <div class="icon-el" @click="selectIcon(icon, 'fab')">
                       <i :class="`fab fa-${icon}`"></i>
@@ -73,13 +85,17 @@
               </ul>
 
               <h4 class="icon-title">Solid Icons</h4>
-              <p style="text-align: center;" v-if="solidIcons.length <= 0">
+              <p style="text-align: center" v-if="solidIcons.length <= 0">
                 <i class="fas fa-eye-slash"></i>
                 Sorry, No Solid icons found!
               </p>
 
               <ul class="rip-row" v-if="solidIcons.length > 0">
-                <li v-for="(icon, index) in solidIcons" :key="index" class="rip-col">
+                <li
+                  v-for="(icon, index) in solidIcons"
+                  :key="index"
+                  class="rip-col"
+                >
                   <div class="icon-content text-center">
                     <div class="icon-el" @click="selectIcon(icon, 'fas')">
                       <i :class="`fas fa-${icon}`"></i>
@@ -90,7 +106,6 @@
                   </div>
                 </li>
               </ul>
-
             </div>
           </div>
         </div>
@@ -100,125 +115,134 @@
 </template>
 
 <script>
-  import ripIcons from './assets/icons';
-  import('@fortawesome/fontawesome-free/js/all');
+import ripIcons from "./assets/icons";
+// import("@fortawesome/fontawesome-free/js/all");
 
-  export default {
-    name: 'VueIconPicker',
-    props: {
-      button: {
-        type: String,
-        default: 'Pick an Icon'
-      },
-      title: {
-        type: String,
-        default: 'Vue Icon Picker'
-      },
-      iconPreview: {
-        type: Boolean,
-        default: true
-      },
-      bgColor: {
-        type: String,
-        default: '#212121'
-      },
-      txtColor: {
-        type: String,
-        default: '#e1e1e1'
-      }
+export default {
+  name: "VueIconPicker",
+  props: {
+    button: {
+      type: String,
+      default: "Pick an Icon"
     },
-    data() {
-      return {
-        loading: false,
-        allIcons: {
-            brand: [],
-            regular: [],
-            solid: []
-        },
-
-        popUpActive: false,
-        selectedIcon: {
-          name: null,
-          type: null
-        },
-        searchText: '',
-
-        searchIconNotFound: false
-      }
+    title: {
+      type: String,
+      default: "Vue Icon Picker"
     },
-    methods: {
-      selectIcon(icon, type) {
-        this.selectedIcon.type = type;
-        this.selectedIcon.name = icon;
-        this.popUpActive = false;
-        this.$emit('selected', this.selectedIcon);
+    iconPreview: {
+      type: Boolean,
+      default: true
+    },
+    bgColor: {
+      type: String,
+      default: "#212121"
+    },
+    txtColor: {
+      type: String,
+      default: "#e1e1e1"
+    },
+    loadIcons: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data() {
+    return {
+      loading: false,
+      allIcons: {
+        brand: [],
+        regular: [],
+        solid: []
       },
-      searchTextChanged() {
-        this.searchIcon(this.searchText);
+
+      popUpActive: false,
+      selectedIcon: {
+        name: null,
+        type: null
       },
-      setDefaultIcons() {
-        this.allIcons.brand = ripIcons.brand;
-        this.allIcons.regular = ripIcons.regular;
-        this.allIcons.solid = ripIcons.solid;
-      },
-      searchIcon(txt) {
-        this.loading = true;
-        if(txt && txt.length > 0) {
+      searchText: "",
+
+      searchIconNotFound: false
+    };
+  },
+  mounted() {
+    if (this.loadIcons) {
+      import("@fortawesome/fontawesome-free/js/all");
+    }
+  },
+  methods: {
+    selectIcon(icon, type) {
+      this.selectedIcon.type = type;
+      this.selectedIcon.name = icon;
+      this.popUpActive = false;
+      this.$emit("selected", this.selectedIcon);
+    },
+    searchTextChanged() {
+      this.searchIcon(this.searchText);
+    },
+    setDefaultIcons() {
+      this.allIcons.brand = ripIcons.brand;
+      this.allIcons.regular = ripIcons.regular;
+      this.allIcons.solid = ripIcons.solid;
+    },
+    searchIcon(txt) {
+      this.loading = true;
+      if (txt && txt.length > 0) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 950);
+
+        txt = txt.toLowerCase();
+        Object.keys(ripIcons).forEach(key => {
           setTimeout(() => {
-            this.loading = false;
-          }, 950);
-
-          txt = txt.toLowerCase();
-          Object.keys(ripIcons).forEach(key => {
-            setTimeout(() => {
-              let icons = ripIcons[key].filter(ico => ico.indexOf(txt) > -1);
-              if(icons && icons.length > 0) {
-                this.allIcons[key] = icons;
-              } else {
-                this.allIcons[key] = [];
-              }
-            }, 320);
-          });
-        } else {
-          setTimeout(() => {
-            this.setDefaultIcons();
-            this.loading = false;
-          }, 950);
-        }
-      }
-    },
-    created() {
-      this.setDefaultIcons();
-    },
-    computed: {
-      popupActiveStyle() {
-        return !this.popUpActive ? 'display: none;' : '';
-      },
-      brandIcons() {
-        return this.loading ? [] : this.allIcons.brand;
-      },
-      solidIcons() {
-        return this.loading ? [] : this.allIcons.solid;
-      },
-      regularIcons() {
-        return this.loading ? [] : this.allIcons.regular;
-      },
-      // Custom styling options
-      customStyle () {
-        return {
-          background: this.bgColor,
-          color: this.txtColor
-        }
+            let icons = ripIcons[key].filter(ico => ico.indexOf(txt) > -1);
+            if (icons && icons.length > 0) {
+              this.allIcons[key] = icons;
+            } else {
+              this.allIcons[key] = [];
+            }
+          }, 320);
+        });
+      } else {
+        setTimeout(() => {
+          this.setDefaultIcons();
+          this.loading = false;
+        }, 950);
       }
     }
-  };
+  },
+  created() {
+    this.setDefaultIcons();
+  },
+  computed: {
+    popupActiveStyle() {
+      return !this.popUpActive ? "display: none;" : "";
+    },
+    brandIcons() {
+      return this.loading ? [] : this.allIcons.brand;
+    },
+    solidIcons() {
+      return this.loading ? [] : this.allIcons.solid;
+    },
+    regularIcons() {
+      return this.loading ? [] : this.allIcons.regular;
+    },
+    // Custom styling options
+    customStyle() {
+      return {
+        background: this.bgColor,
+        color: this.txtColor
+      };
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-  @import "./assets/RbtIconPicker";
+@import "./assets/RbtIconPicker";
 
-  .picker-btn {
-    color: #fff;
-    background: #339af0;
-  }
+.picker-btn {
+  color: #fff;
+  background: #339af0;
+}
 </style>
